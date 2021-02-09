@@ -1,0 +1,21 @@
+Script started on 2021-02-09 09:19:34+00:00
+[root@lvm ~]# touch /home/file{1..20}
+[root@lvm ~]# ls /home
+file1  file10  file11  file12  file13  file14  file15  file16  file17  file18  file19  file2  file20  file3  file4  file5  file6  file7  file8  file9  vagrant
+[root@lvm ~]#  lvcreate -L 100MB -s -n home_snap /dev/VolGroup00/LogVol_Home
+  Rounding up size to full physical extent 128.00 MiB
+  Logical volume "home_snap" created.
+[root@lvm ~]# rm -f /home/file{11..20}
+[root@lvm ~]# ls /home/
+file1  file10  file2  file3  file4  file5  file6  file7  file8  file9  vagrant
+[root@lvm ~]# umount /home
+[root@lvm ~]# lvconvert --merge /dev/VolGroup00/home_snap
+  Merging of volume VolGroup00/home_snap started.
+  VolGroup00/LogVol_Home: Merged: 100.00%
+[root@lvm ~]#  mount /home
+[root@lvm ~]# ls /home/
+file1  file10  file11  file12  file13  file14  file15  file16  file17  file18  file19  file2  file20  file3  file4  file5  file6  file7  file8  file9  vagrant
+[root@lvm ~]# exit
+exit
+
+Script done on 2021-02-09 09:22:53+00:00
